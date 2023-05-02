@@ -109,7 +109,7 @@ resource "azurerm_public_ip" "catapp-pip" {
   domain_name_label   = "${var.prefix}-meow"
 }
 
-resource "azurerm_linux_virtual_machine" "catapp" {
+resource "azurerm_virtual_machine" "catapp" {
   name                            = "${var.prefix}-meow"
   location                        = azurerm_resource_group.myresourcegroup.location
   resource_group_name             = azurerm_resource_group.myresourcegroup.name
@@ -120,6 +120,7 @@ resource "azurerm_linux_virtual_machine" "catapp" {
   network_interface_ids           = [azurerm_network_interface.catapp-nic.id]
   Department                      = devops
   Billable                        = true
+
 
   source_image_reference {
     publisher = var.image_publisher
@@ -155,7 +156,7 @@ resource "azurerm_linux_virtual_machine" "catapp" {
 # Run the deploy_app.sh script.
 resource "null_resource" "configure-cat-app" {
   depends_on = [
-    azurerm_linux_virtual_machine.catapp,
+    azurerm_virtual_machine.catapp,
   ]
 
   # Terraform 0.11
